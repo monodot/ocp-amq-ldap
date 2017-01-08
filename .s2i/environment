@@ -1,0 +1,3 @@
+LDAP_HOST=nowhere.example.com
+LDAP_USER=cn=admin,dc=activemq,dc=apache,dc=org
+LDAP_PASSWORD=sunflower
