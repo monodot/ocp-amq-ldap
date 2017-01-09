@@ -20,18 +20,20 @@
 ## Define basic objects ##
 ##########################
 
-dn: dc=apache,dc=org
-objectClass: dcObject
-objectClass: organization
-dc: apache
-o: Apache
+# Already defined
 
-dn: dc=activemq,dc=apache,dc=org
-objectClass: dcObject
-objectClass: container
-objectClass: top
-cn: activemq
-dc: activemq
+#dn: dc=apache,dc=org
+#objectClass: dcObject
+#objectClass: organization
+#dc: apache
+#o: Apache
+
+#dn: dc=activemq,dc=apache,dc=org
+#objectClass: dcObject
+#objectClass: container
+#objectClass: top
+#cn: activemq
+#dc: activemq
 
 dn: ou=ActiveMQ,dc=activemq,dc=apache,dc=org
 objectClass: organizationalUnit

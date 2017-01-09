@@ -89,8 +89,9 @@ function configureAuthentication() {
         roleName=cn \n\
         roleSearchMatching=\"(member:=uid={1})\" \n\
         roleSearchSubtree=true \n\
-        ; 
+        ;\n\
     };"
+    #sed -i "s|##### LDAP_CONFIG #####|${ldapConfiguration}|" "$LOGIN_FILE"
     sed -i "s|\/\* ##### LDAP_CONFIG ##### \*\/|${ldapConfiguration}|" "$LOGIN_FILE"
     authentication="<jaasAuthenticationPlugin configuration=\"LdapConfiguration\" />\n\
             <authorizationPlugin>\n\
