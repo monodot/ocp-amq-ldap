@@ -116,6 +116,18 @@
 
         <plugins>
             <!-- ##### AUTHENTICATION ##### -->
+
+            <authorizationPlugin>
+                <map>
+                    <authorizationMap>
+                        <authorizationEntries>
+                            <authorizationEntry queue=">" read="users" write="users" admin="users"/>
+                            <authorizationEntry topic="ActiveMQ.Advisory.>" read="*" write="*" admin="*"/>
+                        </authorizationEntries>
+                    </authorizationMap>
+                </map>
+            </authorizationPlugin>
+
         </plugins>
 
         <!--
