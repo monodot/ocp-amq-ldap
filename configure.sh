@@ -79,6 +79,7 @@ function configureAuthentication() {
         connectionURL=\"ldap://${ldap_host}:389\" \n\
         connectionUsername=\"${ldap_user}\" \n\
         connectionPassword=${ldap_password} \n\
+	connectionProtocol=\"\" \n\
         authentication=simple \n\
         userBase=\"ou=User,ou=ActiveMQ,dc=activemq,dc=apache,dc=org\" \n\
         userRoleName=dummyUserRoleName \n\

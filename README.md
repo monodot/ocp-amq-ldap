@@ -4,8 +4,6 @@ Demonstrating how to use S2I to configure LDAP authentication in ActiveMQ, using
 
 - Overrides the `configure.sh` script supplied with the A-MQ image to add LDAP configuration
 
-**Work in progress**
-
 ## To build and run locally
 
 Using the [OpenShift source-to-image][s2i] tool:
@@ -37,7 +35,7 @@ Now start a new container from the LDAP-configured A-MQ image, pointing to the _
 
 To send a test message, start a bash shell in the container and run:
 
-    $ /opt/amq/bin/activemq producer --messageCount 1 --user jdoe --password sunflower
+    $ docker exec -it ocp-amq-ldap /opt/amq/bin/activemq producer --messageCount 1 --user jdoe --password sunflower
 
 
 [1]: https://access.redhat.com/documentation/en/red-hat-jboss-middleware-for-openshift/3/paged/red-hat-jboss-a-mq-for-openshift/
