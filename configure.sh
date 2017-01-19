@@ -77,9 +77,8 @@ function configureAuthentication() {
         debug=true \n\
         initialContextFactory=com.sun.jndi.ldap.LdapCtxFactory \n\
         connectionURL=\"ldap://${ldap_host}:389\" \n\
-        connectionUsername=\"cn=mqbroker,ou=Services,dc=activemq,dc=apache,dc=org\" \n\
-        connectionPassword=password \n\
-        connectionProtocol=s \n\
+        connectionUsername=\"${ldap_user}\" \n\
+        connectionPassword=${ldap_password} \n\
         authentication=simple \n\
         userBase=\"ou=User,ou=ActiveMQ,dc=activemq,dc=apache,dc=org\" \n\
         userRoleName=dummyUserRoleName \n\
@@ -93,21 +92,22 @@ function configureAuthentication() {
     };"
     #sed -i "s|##### LDAP_CONFIG #####|${ldapConfiguration}|" "$LOGIN_FILE"
     sed -i "s|\/\* ##### LDAP_CONFIG ##### \*\/|${ldapConfiguration}|" "$LOGIN_FILE"
-    authentication="<jaasAuthenticationPlugin configuration=\"LdapConfiguration\" />\n\
-            <authorizationPlugin>\n\
-              <map>\n\
-                <cachedLDAPAuthorizationMap\n\
-                    connectionURL=\"ldap://${ldap_host}:389\"\n\
-                    connectionUsername=\"${ldap_user}\"\n\
-                    connectionPassword=\"${ldap_password}\"\n\
-                    queueSearchBase=\"ou=Queue,ou=Destination,ou=ActiveMQ,dc=activemq,dc=apache,dc=org\"\n\
-                    topicSearchBase=\"ou=Topic,ou=Destination,ou=ActiveMQ,dc=activemq,dc=apache,dc=org\"\n\
-                    tempSearchBase=\"ou=Temp,ou=Destination,ou=ActiveMQ,dc=activemq,dc=apache,dc=org\"\n\
-                    refreshInterval=\"300000\"\n\
-                    legacyGroupMapping=\"false\"\n\
-                />\n\
-             </map>\n\
-            </authorizationPlugin>"
+    authentication="<jaasAuthenticationPlugin configuration=\"LdapConfiguration\" />"
+#	    <!--
+#            <authorizationPlugin>\n\
+#              <map>\n\
+#                <cachedLDAPAuthorizationMap\n\
+#                    connectionURL=\"ldap://${ldap_host}:389\"\n\
+#                    connectionUsername=\"${ldap_user}\"\n\
+#                    connectionPassword=\"${ldap_password}\"\n\
+#                    queueSearchBase=\"ou=Queue,ou=Destination,ou=ActiveMQ,dc=activemq,dc=apache,dc=org\"\n\
+#                    topicSearchBase=\"ou=Topic,ou=Destination,ou=ActiveMQ,dc=activemq,dc=apache,dc=org\"\n\
+#                    tempSearchBase=\"ou=Temp,ou=Destination,ou=ActiveMQ,dc=activemq,dc=apache,dc=org\"\n\
+#                    refreshInterval=\"300000\"\n\
+#                    legacyGroupMapping=\"false\"\n\
+#                />\n\
+#             </map>\n\
+#            </authorizationPlugin>-->"
   else
     authentication="<jaasAuthenticationPlugin configuration=\"activemq-guest\" />"
   fi
