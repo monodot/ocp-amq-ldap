@@ -99,7 +99,7 @@ function configureAuthentication() {
         roleSearchMatching=\"(member:=uid={1})\" \n\
         roleSearchSubtree=true \n\
         ;\n\
-	$propertiesModule
+	$propertiesModule \n\
    };"
     #sed -i "s|##### LDAP_CONFIG #####|${ldapConfiguration}|" "$LOGIN_FILE"
     sed -i "s|\/\* ##### LDAP_CONFIG ##### \*\/|${ldapConfiguration}|" "$LOGIN_FILE"
