@@ -67,13 +67,22 @@ function configureAuthentication() {
   ldap_host="${LDAP_HOST}"
   ldap_user="${LDAP_USER}"
   ldap_password="${LDAP_PASSWORD}"
+  authenticationType=$(find_env "AMQ_AUTHENTICATION_TYPE" "ldap")
   
-  if [ -n "${username}" -a -n "${password}" ] ; then
-    sed -i "s|##### AUTHENTICATION #####|${username}=${password}|" "${USERS_FILE}"
-    authentication="<jaasAuthenticationPlugin configuration=\"activemq\" />"
-  elif [ -n "${ldap_host}" -a -n "${ldap_user}" -a -n "${ldap_password}" ]; then
+  if [ "${authenticationType}" == "ldap" ] ; then
+    ldapAuthFlag="required"
+
+    # Allow properties file based logins for other brokers
+    if [ -n "${username}" -a -n "${password}" ] ; then
+      ldapAuthFlag="sufficient"
+      propertiesModule="org.apache.activemq.jaas.PropertiesLoginModule required \n\
+        debug=true \n\
+        org.apache.activemq.jaas.properties.user=\"users.properties\" \n\
+        org.apache.activemq.jaas.properties.group=\"groups.properties\";"
+    fi
+
     ldapConfiguration="LdapConfiguration {\n\
-    org.apache.activemq.jaas.LDAPLoginModule required \n\
+    org.apache.activemq.jaas.LDAPLoginModule $ldapAuthFlag \n\
         debug=true \n\
         initialContextFactory=com.sun.jndi.ldap.LdapCtxFactory \n\
         connectionURL=\"ldap://${ldap_host}:389\" \n\
@@ -90,7 +99,8 @@ function configureAuthentication() {
         roleSearchMatching=\"(member:=uid={1})\" \n\
         roleSearchSubtree=true \n\
         ;\n\
-    };"
+	$propertiesModule
+   };"
     #sed -i "s|##### LDAP_CONFIG #####|${ldapConfiguration}|" "$LOGIN_FILE"
     sed -i "s|\/\* ##### LDAP_CONFIG ##### \*\/|${ldapConfiguration}|" "$LOGIN_FILE"
     authentication="<jaasAuthenticationPlugin configuration=\"LdapConfiguration\" />"
@@ -109,9 +119,17 @@ function configureAuthentication() {
 #                />\n\
 #             </map>\n\
 #            </authorizationPlugin>-->"
+  elif [ -n "${username}" -a -n "${password}" ] ; then
+    authentication="<jaasAuthenticationPlugin configuration=\"activemq\" />"
   else
     authentication="<jaasAuthenticationPlugin configuration=\"activemq-guest\" />"
   fi
+
+  # Add the username and password into users.properties, if specified
+  if [ -n "${username}" -a -n "${password}" ] ; then
+    sed -i "s|##### AUTHENTICATION #####|${username}=${password}|" "${USERS_FILE}"
+  fi
+
   sed -i "s|<!-- ##### AUTHENTICATION ##### -->|${authentication}|" "$CONFIG_FILE"
 }
 
