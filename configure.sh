@@ -48,13 +48,15 @@ function configureMesh() {
   username="${AMQ_USER}"
   password="${AMQ_PASSWORD}"
   discoveryType="${AMQ_MESH_DISCOVERY_TYPE:-dns}"
+  servicePort="${AMQ_MESH_SERVICE_PORT:-61616}"
+  serviceTransport="${AMQ_MESH_SERVICE_TRANSPORT:-tcp}"
 
   if [ -n "${serviceName}" ] ; then
     networkConnector=""
     if [ -n "${username}" -a -n "${password}" ] ; then
-      networkConnector="<networkConnector userName=\"${username}\" password=\"${password}\" uri=\"${discoveryType}://${serviceName}:61616/?transportType=tcp\" messageTTL=\"-1\" consumerTTL=\"1\" />"
+      networkConnector="<networkConnector userName=\"${username}\" password=\"${password}\" uri=\"${discoveryType}://${serviceName}:${servicePort}/?transportType=${serviceTransport}\" messageTTL=\"-1\" consumerTTL=\"1\" />"
     else
-      networkConnector="<networkConnector uri=\"${discoveryType}://${serviceName}:61616/?transportType=tcp\" messageTTL=\"-1\" consumerTTL=\"1\" />"
+      networkConnector="<networkConnector uri=\"${discoveryType}://${serviceName}:${servicePort}/?transportType=${serviceTransport}\" messageTTL=\"-1\" consumerTTL=\"1\" />"
     fi
     sed -i "s|<!-- ##### MESH_CONFIG ##### -->|${networkConnector}|" "$CONFIG_FILE"
   fi
