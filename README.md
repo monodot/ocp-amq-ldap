@@ -37,6 +37,14 @@ To send a test message, start a bash shell in the container and run:
 
     $ docker exec -it ocp-amq-ldap /opt/amq/bin/activemq producer --messageCount 1 --user jdoe --password sunflower
 
+## To customise
+
+To make broker-to-broker communication happen only over SSL, set the following environment variables on the container:
+
+- `AMQ_MESH_SERVICE_PORT` should be `61617`
+- `AMQ_MESH_SERVICE_TRANSPORT` should be `ssl`
+
+If running inside OpenShift, set these environment variables on your DeploymentConfig using `oc set env dc/yourname ENV=var`.
 
 [1]: https://access.redhat.com/documentation/en/red-hat-jboss-middleware-for-openshift/3/paged/red-hat-jboss-a-mq-for-openshift/
 [s2i]: https://github.com/openshift/source-to-image
