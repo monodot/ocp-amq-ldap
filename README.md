@@ -8,7 +8,7 @@ Demonstrating how to use S2I to configure LDAP authentication in ActiveMQ, using
 
 Using the [OpenShift source-to-image][s2i] tool:
 
-    $ git clone https://github.com/ocp-amq-ldap
+    $ git clone https://github.com/monodot/ocp-amq-ldap
     $ cd ocp-amq-ldap
     $ s2i build . registry.access.redhat.com/jboss-amq-6/amq62-openshift ocp-amq-ldap
     
